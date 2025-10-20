@@ -1,19 +1,17 @@
 package com.technical.support_ticket_analyzer.dto;
 
-public class LoginRequest {
+public class LoginRequestDTO {
 
     private String username;
     private String password;
 
-    // --- Constructors ---
-    public LoginRequest() {}
+    public LoginRequestDTO() {}
 
-    public LoginRequest(String username, String password) {
+    public LoginRequestDTO(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    // --- Getters and Setters ---
     public String getUsername() {
         return username;
     }

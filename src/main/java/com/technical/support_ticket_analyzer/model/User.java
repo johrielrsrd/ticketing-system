@@ -1,7 +1,12 @@
 package com.technical.support_ticket_analyzer.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -11,34 +16,35 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 100)
-    private String username;
-
-    @Column(nullable = false, unique = true, length = 150)
-    private String email;
+    @Column(nullable = false, length = 100)
+    private String firstName;
 
     @Column(nullable = false, length = 100)
-    private String fullName;
+    private String lastName;
 
-    @Column(length = 20)
-    private String role = "USER";
+    @Column(nullable = false, unique = true, length = 150)
+    @NotBlank(message = "Email cannot be empty")
+    private String email;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @Column(nullable = false)
-    private boolean active = true;
+    private final LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Credential credential;
 
-    // --- Constructors ---
-    public User() {}
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Ticket> tickets = new ArrayList<>();
 
-    public User(String username, String email, String fullName) {
-        this.username = username;
+    // --- Constructors ---
+    public User() {
+    }
+
+    public User(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
-        this.fullName = fullName;
     }
 
     // --- Getters and Setters ---
@@ -50,12 +56,20 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -66,32 +80,8 @@ public class User {
         this.email = email;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public Credential getCredential() {
@@ -102,6 +92,19 @@ public class User {
         this.credential = credential;
         if (credential != null) {
             credential.setUser(this);
+        }
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+        if (tickets != null) {
+            for (Ticket ticket : tickets) {
+                ticket.setUser(this);
+            }
         }
     }
 }

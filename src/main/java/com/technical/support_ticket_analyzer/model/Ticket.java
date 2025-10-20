@@ -1,5 +1,6 @@
 package com.technical.support_ticket_analyzer.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -14,8 +15,12 @@ public class Ticket {
     private String description;
     private String status;
     private String priority;
-
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
 
     public Ticket() {
 
@@ -67,5 +72,16 @@ public class Ticket {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        if (user != null && !user.getTickets().contains(this)) {
+            user.getTickets().add(this);
+        }
     }
 }

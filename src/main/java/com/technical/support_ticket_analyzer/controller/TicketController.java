@@ -2,6 +2,7 @@ package com.technical.support_ticket_analyzer.controller;
 
 import com.technical.support_ticket_analyzer.model.Ticket;
 import com.technical.support_ticket_analyzer.service.TicketService;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,8 +32,12 @@ public class TicketController {
     }
 
     @PostMapping
-    public Ticket createTicket(@RequestBody Ticket ticket) {
-        return service.createTicket(ticket);
+    public Ticket createTicket(@RequestBody Ticket ticket, Authentication authentication) {
+        // Get the username of the logged-in user
+        String username = authentication.getName();
+        System.out.println(username);
+        // Pass username + ticket to service
+        return service.createTicketForUser(ticket, username);
     }
 
     @PutMapping("/{id}")

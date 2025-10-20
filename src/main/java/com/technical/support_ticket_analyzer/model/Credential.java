@@ -1,8 +1,9 @@
 package com.technical.support_ticket_analyzer.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "credentials")
@@ -12,31 +13,40 @@ public class Credential {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true, length = 100)
+    @NotBlank(message = "Username cannot be empty")
+    private String username;
+
     @Column(nullable = false)
     private String passwordHash;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
-    @JsonIgnore
+    @JsonBackReference
     private User user;
 
-    // --- Constructors ---
-    public Credential() {}
+    public Credential() {
+    }
 
-    public Credential(String passwordHash) {
+    public Credential(String username, String passwordHash) {
+        this.username = username;
         this.passwordHash = passwordHash;
     }
 
-    // --- Getters and Setters ---
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPasswordHash() {
@@ -47,15 +57,14 @@ public class Credential {
         this.passwordHash = passwordHash;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+        if (user != null && user.getCredential() != this) {
+            user.setCredential(this);
+        }
     }
 }
