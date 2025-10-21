@@ -1,17 +1,25 @@
 package com.technical.support_ticket_analyzer.controller;
 
 import com.technical.support_ticket_analyzer.dto.LoginRequestDTO;
+import com.technical.support_ticket_analyzer.dto.RegisterUserDTO;
 import com.technical.support_ticket_analyzer.model.Credential;
 import com.technical.support_ticket_analyzer.model.User;
 import com.technical.support_ticket_analyzer.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(
+        origins = "http://localhost:5173",
+        allowCredentials = "true"
+)
 public class AuthController {
 
     private final AuthService authService;
@@ -23,9 +31,13 @@ public class AuthController {
 
     // --- Register new user ---
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
-        User saved = authService.registerUser(user);
-        return ResponseEntity.ok(saved);
+    public ResponseEntity<Map<String, Object>> register(@RequestBody RegisterUserDTO newUser) {
+        User savedUser = authService.registerUser(newUser);
+        Map<String, Object> response = Map.of(
+                "user", savedUser,
+                "message", "User registered successfully!"
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     // --- Login user ---
@@ -34,5 +46,15 @@ public class AuthController {
         Credential loggedInUser = authService.login(loginRequestDTO.getUsername(), loginRequestDTO.getPassword(), httpServletRequest);
 
         return ResponseEntity.ok("Currently Logged In: " + loggedInUser.getUsername());
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(HttpServletRequest request) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+            return ResponseEntity.ok("Authenticated as: " + auth.getName());
+        } else {
+            return ResponseEntity.status(401).body("Not authenticated");
+        }
     }
 }

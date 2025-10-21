@@ -1,5 +1,6 @@
 package com.technical.support_ticket_analyzer.service;
 
+import com.technical.support_ticket_analyzer.dto.RegisterUserDTO;
 import com.technical.support_ticket_analyzer.model.User;
 import com.technical.support_ticket_analyzer.model.Credential;
 import com.technical.support_ticket_analyzer.repository.UserRepository;
@@ -35,21 +36,23 @@ public class AuthService {
     }
 
     // --- Registration ---
-    public User registerUser(User user) {
+    public User registerUser(RegisterUserDTO newUser) {
         // Prevent duplicates
-        String username = user.getCredential().getUsername();
+        String username = newUser.getUsername();
 
         if (credentialRepository.existsByUsername(username)) {
             throw new RuntimeException("Username is already taken.");
         }
-        if (userRepository.existsByEmail(user.getEmail())) {
+        if (userRepository.existsByEmail(newUser.getEmail())) {
             throw new RuntimeException("Email is already in use.");
         }
 
         //get rawPass & hash it.
-        String rawPassword = user.getCredential().getPasswordHash();
+        String rawPassword = newUser.getPassword();
         String hashedPassword = passwordEncoder.encode(rawPassword);
 
+        // Pass the attributes from DTO to User
+        User user = new User(newUser.getFirstName(), newUser.getLastName(), newUser.getEmail());
         // Create and link credential
         Credential credential = new Credential(username, hashedPassword);
         user.setCredential(credential);

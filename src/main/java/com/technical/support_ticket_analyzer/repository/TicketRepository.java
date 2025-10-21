@@ -1,8 +1,11 @@
 package com.technical.support_ticket_analyzer.repository;
 
 import com.technical.support_ticket_analyzer.model.Ticket;
+import com.technical.support_ticket_analyzer.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TicketRepository extends JpaRepository<Ticket, Long> {
+import java.util.List;
 
+public interface TicketRepository extends JpaRepository<Ticket, Long> {
+    List<Ticket> findByUser(User user);
 }

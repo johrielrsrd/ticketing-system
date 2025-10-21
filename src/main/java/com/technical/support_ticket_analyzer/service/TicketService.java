@@ -41,6 +41,17 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
+
+    public List<Ticket> getTicketsByUsername(String username) {
+        System.out.println("2️⃣ Service: Fetching tickets for username: " + username);
+        Credential credential = credentialRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = credential.getUser();
+        List<Ticket> tickets = ticketRepository.findByUser(user);
+        System.out.println("4️⃣ Service: Found " + tickets.size() + " tickets for user " + username);
+        return tickets;
+    }
+
     public Ticket updateTicket(Long id, Ticket updatedTicket) {
         return ticketRepository.findById(id)
                 .map(ticket -> {
