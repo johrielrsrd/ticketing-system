@@ -5,6 +5,7 @@ import com.technical.support_ticket_analyzer.dto.RegisterUserDTO;
 import com.technical.support_ticket_analyzer.model.Credential;
 import com.technical.support_ticket_analyzer.model.User;
 import com.technical.support_ticket_analyzer.service.AuthService;
+import com.technical.support_ticket_analyzer.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+
+import static com.technical.support_ticket_analyzer.utils.SecurityUtils.getAuthentication;
+import static com.technical.support_ticket_analyzer.utils.SecurityUtils.getByUsername;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -50,11 +54,11 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(HttpServletRequest request) {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
-            return ResponseEntity.ok("Authenticated as: " + auth.getName());
-        } else {
+        String username = SecurityUtils.getByUsername();
+        if (username == null) {
             return ResponseEntity.status(401).body("Not authenticated");
+        } else {
+            return ResponseEntity.ok("Authenticated as: " + username);
         }
     }
 }
