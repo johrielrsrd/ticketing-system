@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-import static com.technical.support_ticket_analyzer.utils.SecurityUtils.getAuthentication;
-import static com.technical.support_ticket_analyzer.utils.SecurityUtils.getByUsername;
-
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(
@@ -50,6 +47,13 @@ public class AuthController {
         Credential loggedInUser = authService.login(loginRequestDTO.getUsername(), loginRequestDTO.getPassword(), httpServletRequest);
 
         return ResponseEntity.ok("Currently Logged In: " + loggedInUser.getUsername());
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        request.getSession().invalidate(); // Destroy the session
+        SecurityContextHolder.clearContext(); // Clear authentication info
+        return ResponseEntity.ok("You have successfully logged out.");
     }
 
     @GetMapping("/me")
