@@ -1,9 +1,12 @@
 package com.technical.support_ticket_analyzer.controller;
 
+import com.technical.support_ticket_analyzer.dto.TicketCsvDTO;
 import com.technical.support_ticket_analyzer.model.Ticket;
+import com.technical.support_ticket_analyzer.service.CsvImportService;
 import com.technical.support_ticket_analyzer.service.TicketService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,9 +18,11 @@ import java.util.List;
 )
 public class TicketController {
     private final TicketService service;
+    private final CsvImportService csvImportService;
 
-    public TicketController(TicketService service) {
+    public TicketController(TicketService service, CsvImportService csvImportService) {
         this.service = service;
+        this.csvImportService = csvImportService;
     }
 
     @GetMapping
@@ -59,4 +64,10 @@ public class TicketController {
     public void deleteTicket(@PathVariable Long id) {
         service.deleteTicket(id);
     }
+
+    @PostMapping("/upload-csv")
+    public List<TicketCsvDTO> uploadCsv(@RequestParam("file") MultipartFile file) {
+        return csvImportService.importCsvFile(file);
+    }
+
 }

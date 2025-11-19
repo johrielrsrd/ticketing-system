@@ -1,6 +1,5 @@
 package com.technical.support_ticket_analyzer.service;
 
-import com.technical.support_ticket_analyzer.model.Ticket;
 import com.technical.support_ticket_analyzer.model.User;
 import com.technical.support_ticket_analyzer.repository.UserRepository;
 import org.springframework.stereotype.Service;
