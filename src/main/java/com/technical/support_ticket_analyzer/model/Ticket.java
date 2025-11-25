@@ -3,7 +3,7 @@ package com.technical.support_ticket_analyzer.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.*;
 
 @Entity
 public class Ticket {
@@ -15,7 +15,7 @@ public class Ticket {
     private String description;
     private String status;
     private String priority;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
