@@ -35,7 +35,7 @@ public class CsvImportService {
         this.validator = validator;
     }
 
-    public List<TicketCsvDTO> importCsvFile(MultipartFile file, String username) throws IOException {
+    public String importCsvFile(MultipartFile file, String username) throws IOException {
             var reader = new InputStreamReader(file.getInputStream());
             List<TicketCsvDTO> uploadedCSV = new CsvToBeanBuilder<TicketCsvDTO>(reader)
                     .withType(TicketCsvDTO.class)
@@ -56,13 +56,13 @@ public class CsvImportService {
                     throw new IllegalArgumentException("Row " + rowNumber + ": " + message);
                 }
             }
-            saveToTicketModel(uploadedCSV, username);
-            return uploadedCSV;
+
+            return saveToTicketModel(uploadedCSV, username);
     }
 
     //saving uploadedCSV to Ticket model.
     @Transactional
-    public void saveToTicketModel(List<TicketCsvDTO> uploadedCSV, String username) {
+    public String saveToTicketModel(List<TicketCsvDTO> uploadedCSV, String username) {
         Credential credential = credentialRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -72,10 +72,21 @@ public class CsvImportService {
 
         List<Ticket> ticketsToSave = new ArrayList<>();
 
+        int insertedCount = 0;
+        int updatedCount = 0;
+
         for (TicketCsvDTO csvItem : uploadedCSV) {
-            Ticket itemToSave = ticketRepository
-                    .findByTicketIdAndUserId(csvItem.getTicketId(), user.getId())
-                    .orElseGet(Ticket::new);
+            var existingTicket = ticketRepository
+                    .findByTicketIdAndUserId(csvItem.getTicketId(), user.getId());
+
+            Ticket itemToSave;
+            if (existingTicket.isPresent()) {
+                itemToSave = existingTicket.get();
+                updatedCount++;
+            } else {
+                itemToSave = new Ticket();
+                insertedCount++;
+            }
 
             itemToSave.setTicketId(csvItem.getTicketId());
             itemToSave.setSubject(csvItem.getSubject());
@@ -92,6 +103,9 @@ public class CsvImportService {
         ticketRepository.saveAll(ticketsToSave);
 
         System.out.println("Saved " + ticketsToSave.size() + " tickets to DB");
-    }
 
+        return "CSV import completed. Total rows: " + uploadedCSV.size()
+                + ", Inserted: " + insertedCount
+                + ", Updated: " + updatedCount;
+    }
 }

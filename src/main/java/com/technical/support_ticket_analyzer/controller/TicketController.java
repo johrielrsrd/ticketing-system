@@ -67,7 +67,7 @@ public class TicketController {
     }
 
     @PostMapping("/upload-csv")
-    public List<TicketCsvDTO> uploadCsv(@RequestParam("file") MultipartFile file, Authentication authentication) throws IOException {
+    public String uploadCsv(@RequestParam("file") MultipartFile file, Authentication authentication) throws IOException {
         String username = authentication.getName();
         System.out.println("Uploading ticket for user: " + username);
         return csvImportService.importCsvFile(file, username);
