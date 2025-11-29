@@ -11,10 +11,11 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long ticketId;
+    private String priority;
+    private String status;
     private String subject;
     private String description;
-    private String status;
-    private String priority;
     private LocalDateTime createdAt;
 
     @ManyToOne
@@ -32,6 +33,14 @@ public class Ticket {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Long ticketId) {
+        this.ticketId = ticketId;
     }
 
     public String getSubject() {
@@ -84,4 +93,6 @@ public class Ticket {
             user.getTickets().add(this);
         }
     }
+
+
 }

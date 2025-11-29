@@ -1,7 +1,14 @@
 package com.technical.support_ticket_analyzer.dto;
+
 import com.opencsv.bean.CsvBindByName;
+import jakarta.validation.constraints.*;
 
 public class TicketCsvDTO {
+
+    @NotNull (message = "ticketId must not be null")
+    @CsvBindByName(column = "ticketId")
+    private Long ticketId;
+
     @CsvBindByName(column = "subject")
     private String subject;
 
@@ -57,5 +64,13 @@ public class TicketCsvDTO {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Long getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Long ticketId) {
+        this.ticketId = ticketId;
     }
 }

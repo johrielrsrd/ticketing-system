@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -66,10 +67,9 @@ public class TicketController {
     }
 
     @PostMapping("/upload-csv")
-    public List<TicketCsvDTO> uploadCsv(@RequestParam("file") MultipartFile file, Authentication authentication) {
+    public List<TicketCsvDTO> uploadCsv(@RequestParam("file") MultipartFile file, Authentication authentication) throws IOException {
         String username = authentication.getName();
         System.out.println("Uploading ticket for user: " + username);
         return csvImportService.importCsvFile(file, username);
     }
-
 }
