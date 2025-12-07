@@ -1,6 +1,6 @@
-package com.technical.support_ticket_analyzer.repository;
+package com.technical.support_ticket_analyzer.users;
 
-import com.technical.support_ticket_analyzer.model.User;
+import com.technical.support_ticket_analyzer.users.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,6 @@
-package com.technical.support_ticket_analyzer.controller;
+package com.technical.support_ticket_analyzer.tickets;
 
-import com.technical.support_ticket_analyzer.model.Ticket;
-import com.technical.support_ticket_analyzer.service.CsvImportService;
-import com.technical.support_ticket_analyzer.service.TicketService;
+import com.technical.support_ticket_analyzer.tickets.model.Ticket;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

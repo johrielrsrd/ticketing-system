@@ -1,6 +1,7 @@
-package com.technical.support_ticket_analyzer.model;
+package com.technical.support_ticket_analyzer.users.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.technical.support_ticket_analyzer.tickets.model.Ticket;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 

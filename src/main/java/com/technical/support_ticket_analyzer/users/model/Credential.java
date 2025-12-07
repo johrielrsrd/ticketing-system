@@ -1,7 +1,6 @@
-package com.technical.support_ticket_analyzer.model;
+package com.technical.support_ticket_analyzer.users.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 

@@ -1,12 +1,11 @@
-package com.technical.support_ticket_analyzer.service;
+package com.technical.support_ticket_analyzer.tickets;
 
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.technical.support_ticket_analyzer.dto.TicketCsvDTO;
-import com.technical.support_ticket_analyzer.model.Credential;
-import com.technical.support_ticket_analyzer.model.Ticket;
-import com.technical.support_ticket_analyzer.model.User;
-import com.technical.support_ticket_analyzer.repository.CredentialRepository;
-import com.technical.support_ticket_analyzer.repository.TicketRepository;
+import com.technical.support_ticket_analyzer.tickets.dto.TicketCsvDTO;
+import com.technical.support_ticket_analyzer.users.model.Credential;
+import com.technical.support_ticket_analyzer.tickets.model.Ticket;
+import com.technical.support_ticket_analyzer.users.model.User;
+import com.technical.support_ticket_analyzer.users.CredentialRepository;
 import jakarta.validation.ConstraintViolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;

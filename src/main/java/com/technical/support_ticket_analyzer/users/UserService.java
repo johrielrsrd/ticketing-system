@@ -1,7 +1,6 @@
-package com.technical.support_ticket_analyzer.service;
+package com.technical.support_ticket_analyzer.users;
 
-import com.technical.support_ticket_analyzer.model.User;
-import com.technical.support_ticket_analyzer.repository.UserRepository;
+import com.technical.support_ticket_analyzer.users.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

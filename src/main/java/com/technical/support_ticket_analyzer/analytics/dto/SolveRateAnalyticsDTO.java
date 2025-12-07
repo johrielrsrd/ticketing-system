@@ -1,4 +1,4 @@
-package com.technical.support_ticket_analyzer.dto;
+package com.technical.support_ticket_analyzer.analytics.dto;
 
 public class SolveRateAnalyticsDTO {
     double solveRatePercentage;

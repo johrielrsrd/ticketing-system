@@ -1,4 +1,4 @@
-package com.technical.support_ticket_analyzer.dto;
+package com.technical.support_ticket_analyzer.auth.dto;
 
 public class RegisterUserDTO {
     private String firstName;

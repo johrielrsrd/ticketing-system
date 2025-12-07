@@ -1,6 +1,7 @@
-package com.technical.support_ticket_analyzer.model;
+package com.technical.support_ticket_analyzer.tickets.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.technical.support_ticket_analyzer.users.model.User;
 import jakarta.persistence.*;
 
 import java.time.*;

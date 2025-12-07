@@ -1,4 +1,4 @@
-package com.technical.support_ticket_analyzer.config;
+package com.technical.support_ticket_analyzer.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

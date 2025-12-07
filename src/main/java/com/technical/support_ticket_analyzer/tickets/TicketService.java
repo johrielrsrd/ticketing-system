@@ -1,11 +1,9 @@
-package com.technical.support_ticket_analyzer.service;
+package com.technical.support_ticket_analyzer.tickets;
 
-import com.technical.support_ticket_analyzer.dto.SolveRateAnalyticsDTO;
-import com.technical.support_ticket_analyzer.model.Credential;
-import com.technical.support_ticket_analyzer.model.Ticket;
-import com.technical.support_ticket_analyzer.model.User;
-import com.technical.support_ticket_analyzer.repository.CredentialRepository;
-import com.technical.support_ticket_analyzer.repository.TicketRepository;
+import com.technical.support_ticket_analyzer.users.model.Credential;
+import com.technical.support_ticket_analyzer.tickets.model.Ticket;
+import com.technical.support_ticket_analyzer.users.model.User;
+import com.technical.support_ticket_analyzer.users.CredentialRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

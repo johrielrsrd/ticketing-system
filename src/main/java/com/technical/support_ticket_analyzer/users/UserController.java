@@ -1,7 +1,6 @@
-package com.technical.support_ticket_analyzer.controller;
+package com.technical.support_ticket_analyzer.users;
 
-import com.technical.support_ticket_analyzer.model.User;
-import com.technical.support_ticket_analyzer.service.UserService;
+import com.technical.support_ticket_analyzer.users.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,10 +1,10 @@
-package com.technical.support_ticket_analyzer.service;
+package com.technical.support_ticket_analyzer.auth;
 
-import com.technical.support_ticket_analyzer.dto.RegisterUserDTO;
-import com.technical.support_ticket_analyzer.model.User;
-import com.technical.support_ticket_analyzer.model.Credential;
-import com.technical.support_ticket_analyzer.repository.UserRepository;
-import com.technical.support_ticket_analyzer.repository.CredentialRepository;
+import com.technical.support_ticket_analyzer.auth.dto.RegisterUserDTO;
+import com.technical.support_ticket_analyzer.users.model.User;
+import com.technical.support_ticket_analyzer.users.model.Credential;
+import com.technical.support_ticket_analyzer.users.UserRepository;
+import com.technical.support_ticket_analyzer.users.CredentialRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

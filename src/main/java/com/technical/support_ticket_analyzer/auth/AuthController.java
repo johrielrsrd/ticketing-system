@@ -1,11 +1,10 @@
-package com.technical.support_ticket_analyzer.controller;
+package com.technical.support_ticket_analyzer.auth;
 
-import com.technical.support_ticket_analyzer.dto.LoginRequestDTO;
-import com.technical.support_ticket_analyzer.dto.RegisterUserDTO;
-import com.technical.support_ticket_analyzer.model.Credential;
-import com.technical.support_ticket_analyzer.model.User;
-import com.technical.support_ticket_analyzer.service.AuthService;
-import com.technical.support_ticket_analyzer.utils.SecurityUtils;
+import com.technical.support_ticket_analyzer.auth.dto.LoginRequestDTO;
+import com.technical.support_ticket_analyzer.auth.dto.RegisterUserDTO;
+import com.technical.support_ticket_analyzer.users.model.Credential;
+import com.technical.support_ticket_analyzer.users.model.User;
+import com.technical.support_ticket_analyzer.common.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,6 @@
-package com.technical.support_ticket_analyzer.controller;
+package com.technical.support_ticket_analyzer.analytics;
 
-import com.technical.support_ticket_analyzer.dto.SolveRateAnalyticsDTO;
-import com.technical.support_ticket_analyzer.service.AnalyticsService;
+import com.technical.support_ticket_analyzer.analytics.dto.SolveRateAnalyticsDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

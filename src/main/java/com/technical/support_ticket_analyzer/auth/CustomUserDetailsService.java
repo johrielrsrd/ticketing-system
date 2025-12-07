@@ -1,7 +1,7 @@
-package com.technical.support_ticket_analyzer.service;
+package com.technical.support_ticket_analyzer.auth;
 
-import com.technical.support_ticket_analyzer.model.Credential;
-import com.technical.support_ticket_analyzer.repository.CredentialRepository;
+import com.technical.support_ticket_analyzer.users.model.Credential;
+import com.technical.support_ticket_analyzer.users.CredentialRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
