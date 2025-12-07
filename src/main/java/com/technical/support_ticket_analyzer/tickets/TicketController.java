@@ -15,52 +15,28 @@ import java.util.List;
         allowCredentials = "true"
 )
 public class TicketController {
-    private final TicketService service;
+    private final TicketService ticketService;
     private final CsvImportService csvImportService;
 
-    public TicketController(TicketService service, CsvImportService csvImportService) {
-        this.service = service;
+    public TicketController(TicketService ticketService, CsvImportService csvImportService) {
+        this.ticketService = ticketService;
         this.csvImportService = csvImportService;
-    }
-
-    @GetMapping
-    public List<Ticket> getAllTickets() {
-        System.out.println("1️⃣ Controller: Received request for all tickets");
-        List<Ticket> tickets = service.getAllTickets();
-        System.out.println("5️⃣ Controller: Returning response");
-        return tickets;
     }
 
     @GetMapping("/my-tickets")
     public List<Ticket> getMyTickets(Authentication authentication) {
         String username = authentication.getName();
         System.out.println("Fetching tickets for user: " + username);
-        return service.getTicketsByUsername(username);
+        return ticketService.getTicketsByUsername(username);
     }
 
-    @GetMapping("/{id}")
-    public Ticket getTicketById(@PathVariable Long id) {
-        return service.getTicketById(id)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
-    }
-
-    @PostMapping
+    @PostMapping("create-new-ticket")
     public Ticket createTicket(@RequestBody Ticket ticket, Authentication authentication) {
         // Get the username of the logged-in user
         String username = authentication.getName();
         System.out.println("Creating tickets for user: " + username);
         // Pass username + ticket to service
-        return service.createTicketForUser(ticket, username);
-    }
-
-    @PutMapping("/{id}")
-    public Ticket updateTicket(@PathVariable Long id, @RequestBody Ticket ticket) {
-        return service.updateTicket(id, ticket);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteTicket(@PathVariable Long id) {
-        service.deleteTicket(id);
+        return ticketService.createTicketForUser(ticket, username);
     }
 
     @PostMapping("/upload-csv")
