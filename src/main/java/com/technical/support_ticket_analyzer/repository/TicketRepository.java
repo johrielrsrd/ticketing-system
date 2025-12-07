@@ -9,5 +9,10 @@ import java.util.Optional;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
     List<Ticket> findByUser(User user);
+
     Optional<Ticket> findByTicketIdAndUserId(Long ticketId, Long userId);
+
+    long countByUser(User user);
+
+    long countByUserAndStatusIn(User user, List<String> statuses);
 }

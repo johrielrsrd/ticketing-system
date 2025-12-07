@@ -1,6 +1,5 @@
 package com.technical.support_ticket_analyzer.controller;
 
-import com.technical.support_ticket_analyzer.dto.TicketCsvDTO;
 import com.technical.support_ticket_analyzer.model.Ticket;
 import com.technical.support_ticket_analyzer.service.CsvImportService;
 import com.technical.support_ticket_analyzer.service.TicketService;

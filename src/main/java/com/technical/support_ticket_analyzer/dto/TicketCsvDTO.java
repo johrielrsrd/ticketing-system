@@ -6,23 +6,23 @@ import jakarta.validation.constraints.*;
 public class TicketCsvDTO {
 
     @NotNull (message = "ticketId must not be null")
-    @CsvBindByName(column = "ticketId")
+    @CsvBindByName(column = "Ticket ID")
     private Long ticketId;
 
-    @CsvBindByName(column = "subject")
+    @CsvBindByName(column = "Ticket subject")
     private String subject;
 
-    @CsvBindByName(column = "description")
+    @CsvBindByName(column = "Category")
     private String description;
 
-    @CsvBindByName(column = "status")
+    @CsvBindByName(column = "Ticket status")
     private String status;
 
-    @CsvBindByName(column = "priority")
+    @CsvBindByName(column = "Ticket priority")
     private String priority;
 
     // Optional: createdAt can come from CSV, or you can auto-generate later
-    @CsvBindByName(column = "created_at")
+    @CsvBindByName(column = "Ticket created - Date")
     private String createdAt;
 
     // getters and setters

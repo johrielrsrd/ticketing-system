@@ -1,5 +1,6 @@
 package com.technical.support_ticket_analyzer.service;
 
+import com.technical.support_ticket_analyzer.dto.SolveRateAnalyticsDTO;
 import com.technical.support_ticket_analyzer.model.Credential;
 import com.technical.support_ticket_analyzer.model.Ticket;
 import com.technical.support_ticket_analyzer.model.User;
@@ -41,7 +42,6 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-
     public List<Ticket> getTicketsByUsername(String username) {
         System.out.println("2️⃣ Service: Fetching tickets for username: " + username);
         Credential credential = credentialRepository.findByUsername(username)
@@ -52,6 +52,8 @@ public class TicketService {
         return tickets;
     }
 
+
+    //this service is outdated and is a known bug.
     public Ticket updateTicket(Long id, Ticket updatedTicket) {
         return ticketRepository.findById(id)
                 .map(ticket -> {
