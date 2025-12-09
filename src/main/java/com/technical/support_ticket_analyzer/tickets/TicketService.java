@@ -7,7 +7,6 @@ import com.technical.support_ticket_analyzer.users.CredentialRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TicketService {
@@ -19,14 +18,8 @@ public class TicketService {
         this.credentialRepository = credentialRepository;
     }
 
-
-    public List<Ticket> getTicketsByUsername(String username) {
-        System.out.println("2️⃣ Service: Fetching tickets for username: " + username);
-        Credential credential = credentialRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
-        User user = credential.getUser();
-        List<Ticket> tickets = ticketRepository.findByUser(user);
-        System.out.println("4️⃣ Service: Found " + tickets.size() + " tickets for user " + username);
-        return tickets;
+    public List<Ticket> getTicketByUserId(Long userId) {
+        return ticketRepository.findByUserId(userId);
     }
 
     public Ticket createTicketForUser(Ticket ticket, String username) {

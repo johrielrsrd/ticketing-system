@@ -2,8 +2,6 @@ package com.technical.support_ticket_analyzer.analytics;
 
 import com.technical.support_ticket_analyzer.analytics.dto.SolveRateAnalyticsDTO;
 import com.technical.support_ticket_analyzer.tickets.TicketRepository;
-import com.technical.support_ticket_analyzer.users.model.Credential;
-import com.technical.support_ticket_analyzer.users.model.User;
 import com.technical.support_ticket_analyzer.users.CredentialRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,18 +12,14 @@ public class AnalyticsService {
     private final CredentialRepository credentialRepository;
     private final TicketRepository ticketRepository;
 
-    public AnalyticsService (CredentialRepository credentialRepository, TicketRepository ticketRepository) {
+    public AnalyticsService(CredentialRepository credentialRepository, TicketRepository ticketRepository) {
         this.credentialRepository = credentialRepository;
         this.ticketRepository = ticketRepository;
     }
 
     //Analytics: Solve Rate
-    public SolveRateAnalyticsDTO getSolveRate(String username){
-        Credential credential = credentialRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        User user = credential.getUser();
-
-        long totalCount = ticketRepository.countByUser(user);
+    public SolveRateAnalyticsDTO getSolveRate(Long userId) {
+        long totalCount = ticketRepository.countByUserId(userId);
         if (totalCount == 0) {
             SolveRateAnalyticsDTO result = new SolveRateAnalyticsDTO();
             result.setSolvedCount(0);
@@ -35,7 +29,7 @@ public class AnalyticsService {
             return result;
         }
 
-        long solvedCount = ticketRepository.countByUserAndStatusIn(user, List.of("Closed", "Solved"));
+        long solvedCount = ticketRepository.countByUserIdAndStatusIn(userId, List.of("Closed", "Solved"));
         long unsolvedCount = totalCount - solvedCount;
         double solveRate = ((double) solvedCount / totalCount) * 100;
 

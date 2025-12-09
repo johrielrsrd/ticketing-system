@@ -1,7 +1,9 @@
 package com.technical.support_ticket_analyzer.auth;
 
+import com.technical.support_ticket_analyzer.auth.CustomUserDetail;
 import com.technical.support_ticket_analyzer.users.model.Credential;
 import com.technical.support_ticket_analyzer.users.CredentialRepository;
+import com.technical.support_ticket_analyzer.users.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,12 +19,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Credential credential = credentialRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Credential credential = credentialRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return org.springframework.security.core.userdetails.User
-                .withUsername(credential.getUsername())
-                .password(credential.getPasswordHash())
-                .build();
+        User user = credential.getUser();
+
+        return new CustomUserDetail(user.getId(), credential.getUsername(), credential.getPasswordHash(), user.getFirstName(), user.getLastName(), user.getEmail(), java.util.List.of());
     }
 }

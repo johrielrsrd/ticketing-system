@@ -1,6 +1,7 @@
 package com.technical.support_ticket_analyzer.analytics;
 
 import com.technical.support_ticket_analyzer.analytics.dto.SolveRateAnalyticsDTO;
+import com.technical.support_ticket_analyzer.auth.CustomUserDetail;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,8 @@ public class AnalyticsController {
 
     @GetMapping("/solve-rate")
     public SolveRateAnalyticsDTO getMySolveRate(Authentication authentication) {
-        String username = authentication.getName();
-        return analyticsService.getSolveRate(username);
+        CustomUserDetail user = (CustomUserDetail) authentication.getPrincipal();
+        Long userId = user.getUserId();
+        return analyticsService.getSolveRate(userId);
     }
 }

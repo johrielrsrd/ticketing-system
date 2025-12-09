@@ -1,5 +1,6 @@
 package com.technical.support_ticket_analyzer.tickets;
 
+import com.technical.support_ticket_analyzer.auth.CustomUserDetail;
 import com.technical.support_ticket_analyzer.tickets.model.Ticket;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +26,12 @@ public class TicketController {
 
     @GetMapping("/my-tickets")
     public List<Ticket> getMyTickets(Authentication authentication) {
-        String username = authentication.getName();
-        System.out.println("Fetching tickets for user: " + username);
-        return ticketService.getTicketsByUsername(username);
+        CustomUserDetail user = (CustomUserDetail) authentication.getPrincipal();
+        Long userId = user.getUserId();
+        return ticketService.getTicketByUserId(userId);
     }
 
+    // this is not yet being used.
     @PostMapping("create-new-ticket")
     public Ticket createTicket(@RequestBody Ticket ticket, Authentication authentication) {
         // Get the username of the logged-in user
