@@ -32,12 +32,19 @@ public class AuthController {
     // --- Register new user ---
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(@RequestBody RegisterUserDTO newUser) {
-        User savedUser = authService.registerUser(newUser);
-        Map<String, Object> response = Map.of(
-                "user", savedUser,
-                "message", "User registered successfully!"
-        );
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        try {
+            User savedUser = authService.registerUser(newUser);
+            Map<String, Object> response = Map.of(
+                    "user", savedUser,
+                    "message", "User registered successfully!"
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (RuntimeException e) {
+            Map<String, Object> errorBody = Map.of(
+                    "message", e.getMessage()
+            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+        }
     }
 
     // --- Login user ---

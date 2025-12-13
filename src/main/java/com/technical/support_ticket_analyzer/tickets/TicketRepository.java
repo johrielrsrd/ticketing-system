@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
-    List<Ticket> findByUserId(Long userId);
+    List<Ticket> findByUploadedById(Long uploadedById);
 
-    Optional<Ticket> findByTicketIdAndUserId(Long ticketId, Long userId);
+    Optional<Ticket> findByTicketIdAndUploadedById(Long ticketId, Long uploadedById);
 
-    long countByUserId(Long userId);
+    long countByUploadedById(Long uploadedById);
 
-    long countByUserIdAndStatusIn(Long userId, List<String> statuses);
+    long countByUploadedByIdAndStatusIn(Long uploadedById, List<String> statuses);
 }

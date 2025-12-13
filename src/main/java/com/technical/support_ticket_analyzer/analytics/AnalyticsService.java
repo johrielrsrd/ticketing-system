@@ -19,7 +19,7 @@ public class AnalyticsService {
 
     //Analytics: Solve Rate
     public SolveRateAnalyticsDTO getSolveRate(Long userId) {
-        long totalCount = ticketRepository.countByUserId(userId);
+        long totalCount = ticketRepository.countByUploadedById(userId);
         if (totalCount == 0) {
             SolveRateAnalyticsDTO result = new SolveRateAnalyticsDTO();
             result.setSolvedCount(0);
@@ -29,7 +29,7 @@ public class AnalyticsService {
             return result;
         }
 
-        long solvedCount = ticketRepository.countByUserIdAndStatusIn(userId, List.of("Closed", "Solved"));
+        long solvedCount = ticketRepository.countByUploadedByIdAndStatusIn(userId, List.of("Closed", "Solved"));
         long unsolvedCount = totalCount - solvedCount;
         double solveRate = ((double) solvedCount / totalCount) * 100;
 

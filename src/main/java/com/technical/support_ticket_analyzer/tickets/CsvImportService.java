@@ -76,7 +76,7 @@ public class CsvImportService {
 
         for (TicketCsvDTO csvItem : uploadedCSV) {
             var existingTicket = ticketRepository
-                    .findByTicketIdAndUserId(csvItem.getTicketId(), user.getId());
+                    .findByTicketIdAndUploadedById(csvItem.getTicketId(), user.getId());
 
             Ticket itemToSave;
             if (existingTicket.isPresent()) {
@@ -94,7 +94,7 @@ public class CsvImportService {
             itemToSave.setPriority(csvItem.getPriority());
             itemToSave.setCreatedAt(LocalDate.parse(csvItem.getCreatedAt(), formatter).atStartOfDay());
 
-            itemToSave.setUser(user);
+            itemToSave.setUploadedBy(user);
 
             ticketsToSave.add(itemToSave);
         }

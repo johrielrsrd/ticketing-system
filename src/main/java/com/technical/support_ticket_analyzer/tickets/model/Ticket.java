@@ -20,9 +20,9 @@ public class Ticket {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "uploaded_by_user_id")
     @JsonBackReference
-    private User user;
+    private User uploadedBy;
 
     public Ticket() {
 
@@ -84,14 +84,14 @@ public class Ticket {
         this.createdAt = createdAt;
     }
 
-    public User getUser() {
-        return user;
+    public User getUploadedBy() {
+        return uploadedBy;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-        if (user != null && !user.getTickets().contains(this)) {
-            user.getTickets().add(this);
+    public void setUploadedBy(User uploadedBy) {
+        this.uploadedBy = uploadedBy;
+        if (uploadedBy != null && !uploadedBy.getTickets().contains(this)) {
+            uploadedBy.getTickets().add(this);
         }
     }
 

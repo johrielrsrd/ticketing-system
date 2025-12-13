@@ -24,11 +24,16 @@ public class TicketController {
         this.csvImportService = csvImportService;
     }
 
+    @GetMapping
+    public List<Ticket> getAllTickets() {
+        return ticketService.allTicket();
+    }
+
     @GetMapping("/my-tickets")
-    public List<Ticket> getMyTickets(Authentication authentication) {
+    public List<Ticket> ticketsUploadedByMe(Authentication authentication) {
         CustomUserDetail user = (CustomUserDetail) authentication.getPrincipal();
         Long userId = user.getUserId();
-        return ticketService.getTicketByUserId(userId);
+        return ticketService.getTicketsUploadedByUser(userId);
     }
 
     // this is not yet being used.

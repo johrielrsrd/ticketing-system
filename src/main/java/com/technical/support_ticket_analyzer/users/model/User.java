@@ -34,7 +34,7 @@ public class User {
     @JsonManagedReference
     private Credential credential;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "uploadedBy", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Ticket> tickets = new ArrayList<>();
 
@@ -104,7 +104,7 @@ public class User {
         this.tickets = tickets;
         if (tickets != null) {
             for (Ticket ticket : tickets) {
-                ticket.setUser(this);
+                ticket.setUploadedBy(this);
             }
         }
     }

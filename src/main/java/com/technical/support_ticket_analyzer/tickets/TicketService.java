@@ -18,15 +18,19 @@ public class TicketService {
         this.credentialRepository = credentialRepository;
     }
 
-    public List<Ticket> getTicketByUserId(Long userId) {
-        return ticketRepository.findByUserId(userId);
+    public List<Ticket> allTicket() {
+        return ticketRepository.findAll();
+    }
+
+    public List<Ticket> getTicketsUploadedByUser(Long userId) {
+        return ticketRepository.findByUploadedById(userId);
     }
 
     public Ticket createTicketForUser(Ticket ticket, String username) {
         Credential credential = credentialRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
 
         User user = credential.getUser();
-        ticket.setUser(user);  // link user to ticket
+        ticket.setUploadedBy(user);  // link user to ticket
 
         return ticketRepository.save(ticket);
     }
