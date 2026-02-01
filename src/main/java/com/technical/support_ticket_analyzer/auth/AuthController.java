@@ -63,12 +63,11 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> getCurrentUser(HttpServletRequest request) {
+    public ResponseEntity<?> getCurrentUser() {
         String username = SecurityUtils.getByUsername();
         if (username == null) {
-            return ResponseEntity.status(401).body("Not authenticated");
-        } else {
-            return ResponseEntity.ok("Authenticated as: " + username);
+            return ResponseEntity.status(401).body(Map.of("message", "Not authenticated"));
         }
+        return ResponseEntity.ok(Map.of("username", username));
     }
 }
