@@ -64,10 +64,13 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser() {
-        String username = SecurityUtils.getByUsername();
-        if (username == null) {
+        CustomUserDetail user = SecurityUtils.getCurrentUser();
+        if (user == null) {
             return ResponseEntity.status(401).body(Map.of("message", "Not authenticated"));
         }
-        return ResponseEntity.ok(Map.of("username", username));
+        return ResponseEntity.ok(Map.of("username", user.getUsername(),
+                "firstName", user.getFirstName(),
+                "lastName", user.getLastName(),
+                "email", user.getEmail()));
     }
 }
