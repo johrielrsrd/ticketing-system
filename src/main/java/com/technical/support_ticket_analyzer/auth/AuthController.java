@@ -49,10 +49,32 @@ public class AuthController {
 
     // --- Login user ---
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDTO loginRequestDTO, HttpServletRequest httpServletRequest) {
-        Credential loggedInUser = authService.login(loginRequestDTO.getUsername(), loginRequestDTO.getPassword(), httpServletRequest);
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO, HttpServletRequest httpServletRequest) {
+        String username = loginRequestDTO.getUsername();
+        String password = loginRequestDTO.getPassword();
 
-        return ResponseEntity.ok("Currently Logged In: " + loggedInUser.getUsername());
+        if (username == null || username.isBlank() || password == null || password.isBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                    "message", "Username or password is invalid!"
+            ));
+        }
+
+        try {
+            CustomUserDetail user = authService.login(username, password, httpServletRequest);
+
+            return ResponseEntity.ok(Map.of(
+                    "username", user.getUsername(),
+                    "firstName", user.getFirstName(),
+                    "lastName", user.getLastName(),
+                    "email", user.getEmail()
+            ));
+        } catch (RuntimeException ex) {
+            // Wrong credentials (or other auth failure)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                    "message", "Username or password not found.",
+                    "exception", ex.getMessage()
+            ));
+        }
     }
 
     @PostMapping("/logout")
@@ -66,7 +88,7 @@ public class AuthController {
     public ResponseEntity<?> getCurrentUser() {
         CustomUserDetail user = SecurityUtils.getCurrentUser();
         if (user == null) {
-            return ResponseEntity.status(401).body(Map.of("message", "Not authenticated"));
+            return ResponseEntity.status(401).body(Map.of("message", "Not authorized."));
         }
         return ResponseEntity.ok(Map.of("username", user.getUsername(),
                 "firstName", user.getFirstName(),

@@ -60,26 +60,26 @@ public class AuthService {
     }
 
     // --- Login ---
-    public Credential login(String username, String password, HttpServletRequest httpRequest) {
-        // Authenticate manually
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-        );
+    public CustomUserDetail login(String username, String password, HttpServletRequest httpRequest) {
 
-        if (!auth.isAuthenticated()) {
-            throw new RuntimeException("Invalid credentials");
+        try { // Authenticate manually
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+
+            // Store authentication in security context
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+            // ✅ Create a session and bind the security context to it
+            HttpSession session = httpRequest.getSession(true);
+            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                    SecurityContextHolder.getContext());
+
+            // Successfully authenticated
+            return (CustomUserDetail) auth.getPrincipal();
+        } catch (Exception e) {
+            // Bubble up a consistent message to the controller
+            throw new RuntimeException("RUNTIME EXCEPTION: Username or password not found.", e);
         }
-
-        // Store authentication in security context
-        SecurityContextHolder.getContext().setAuthentication(auth);
-
-        // ✅ Create a session and bind the security context to it
-        HttpSession session = httpRequest.getSession(true);
-        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                SecurityContextHolder.getContext());
-
-        // Successfully authenticated
-        return credentialRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
