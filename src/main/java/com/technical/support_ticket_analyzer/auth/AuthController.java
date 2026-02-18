@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.Map;
 
@@ -31,11 +32,15 @@ public class AuthController {
 
     // --- Register new user ---
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> register(@RequestBody RegisterUserDTO newUser) {
+    public ResponseEntity<Map<String, Object>> register(@Valid @RequestBody RegisterUserDTO newUser) {
         try {
             User savedUser = authService.registerUser(newUser);
             Map<String, Object> response = Map.of(
-                    "user", savedUser,
+                    "user", Map.of(
+                            "username", savedUser.getCredential().getUsername(),
+                            "firstName", savedUser.getFirstName(),
+                            "lastName", savedUser.getLastName()
+                    ),
                     "message", "User registered successfully!"
             );
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
